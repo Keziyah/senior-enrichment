@@ -23,6 +23,12 @@ module.exports = app
 
   // notice the use of `_` as the first parameter above. This is a pattern for parameters that must exist, but you don't use or reference (or need) in the function body that follows.
 
+ .use(function (err, req, res, next) {
+    console.error(err, err.stack);
+    res.status(500).send(err);
+});
+
+
 if (module === require.main) {
   // Start listening only if we're the main module.
 
