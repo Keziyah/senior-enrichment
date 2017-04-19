@@ -25,6 +25,7 @@ export const DELETE_STUDENT = "DELETE_STUDENT"
 
 export const FETCH_CAMPUSES = "FETCH_CAMPUSES"
 export const FETCH_STUDENTS = "FETCH_STUDENTS"
+//export const FETCH_INDIVIDUAL_CAMPUS = "FETCH_INDIVIDUAL_CAMPUS"
 
 //***************************** */
 //ACTIONS
@@ -41,13 +42,20 @@ export const addCampus = (newCampus) => {
 }
 
 export const setCampus = (campusID) => {
-  const request = axios.get(`/campuses/${campusID}`)
+  const request = axios.get(`api/campuses/${campusID}`)
 
   return {
     type: SET_CAMPUS, 
     payload: request
   }
 }
+
+// export const  fetchIndividualCampus = () => {
+//   return {
+//     type: FETCH_INDIVIDUAL_CAMPUS, 
+//     payload: initialStudentState.SelectedCampus
+//   }
+// }
 
 //We don't need to add deleteCampus to the reducer. Why?
 //We can just delete the campus from the db, then redirect the 
@@ -62,10 +70,11 @@ export const deleteCampus = (campus) => {
   }
 }
 
-export const addStudent = (student) => {
+export const addStudent = (newStudent) => {
+  const request = axios.post('/api/students', newStudent)
   return {
     type: ADD_STUDENT, 
-    payload: student
+    payload: request
   }
 }
 
@@ -90,13 +99,14 @@ export const fetchCampuses = () => {
 //***************************** */
 
 const studentReducer = function(state = initialStudentState, action) {
+  const newState = {...state}
   switch(action.type) {
     case ADD_STUDENT:
       console.log("NEW STUDENT", action.payload)
-      let moreStudents = state.students.concat(action.payload)
-      return {...state, students: moreStudents }
+     newState.students = action.payload
     default: return state
   }
+  return newState
 }
 
 const campusReducer = function(state = initialCampusState, action) {
@@ -106,9 +116,10 @@ const campusReducer = function(state = initialCampusState, action) {
       let moreCampuses = state.campuses.concat(action.payload.data)
       return {...state, campuses: moreCampuses} 
     case SET_CAMPUS: 
-      console.log(action.payload)
+      console.log("SET CAMPUS", action.payload)
       return {...state, SelectedCampus: action.payload}
     case FETCH_CAMPUSES: 
+      console.log("FETCHING CAMPUSES", action.payload.data)
       return {...state, campuses: action.payload.data}
     case DELETE_CAMPUS: 
       return state

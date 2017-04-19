@@ -54,3 +54,12 @@ api.delete('/campuses', (req, res, next) => {
 	})
 	.catch(next)
 })
+
+api.post('/students', (req, res, next) => {
+	Student.create(req.body)
+	.then(student => {
+		res.send(student)
+	})
+	.catch(next)
+
+})

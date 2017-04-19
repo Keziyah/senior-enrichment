@@ -11,13 +11,15 @@ class Home extends Component {
         this.state = {toggleAddCampus: false}
         this.handleClick = this.handleClick.bind(this)
         this.addButton = this.addButton.bind(this)
+
+        console.log("PROPS FROM HOME", this.props)
     }
 
     //Before the component mounts, fetch a list of campuses from the db, add them to the store and render them to the page. 
-    componentWillMount() {
-        this.props.fetchCampuses()
-        .catch(error => console.error(error))
-    }
+    // componentWillMount() {
+    //     this.props.fetchCampuses()
+    //     .catch(error => console.error(error))
+    // }
 
     //When someone clicks, get the text of the current thing they clicked. 
     //Which is the campus name. Then send the current name to the store.
@@ -45,7 +47,7 @@ class Home extends Component {
 
             {
                 this.props.campuses.campuses.map(campus => {
-                    console.log(campus)
+                    console.log("CAMPUS", campus.name, campus)
                     return (
                         <div key={campus.id} >
                          <Link key={campus.id} id={campus.id} onClick={this.handleClick} to={`/campus/${campus.id}`}><h1 key={campus.id}>{campus.name}</h1></Link>
@@ -61,11 +63,13 @@ class Home extends Component {
 
 
 //Get all the campuses from the store so we can render them here. 
-function mapStateToProps(state) {
-    return {
-        campuses: state.campuses
-    }
-}
+// function mapStateToProps(state) {
+//     return {
+//         campuses: state.campuses
+//     }
+// }
 
 //Add the required information from the store to this component's props. 
-export default connect(mapStateToProps, {setCampus, fetchCampuses})(Home); 
+export default connect(null, {setCampus})(Home); 
+//add fetchCampuses back to connect
+//add mapstate back to connect
